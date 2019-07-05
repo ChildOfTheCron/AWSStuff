@@ -1,13 +1,16 @@
-import json
-import boto3
-
 # CHECK ALL EC2 INSTANCES FOR PUBLIC IPS
 # ======================================
 # This lambda is a heavily modified version of the example rule found at:
 # https://github.com/awslabs/aws-config-rules/blob/master/python/ec2_desired_instance_type.py
 # Rather than compare instance types with a specified resource, I instead wanted to check all EC2
-# instances for public IPs. If any existed I wanted them to appear in AWS Config as Non-Compliant
+# instances for public IPs. If any existed I wanted the Instances to appear in AWS Config as Non-Compliant.
+# Meant to be hooked up to AWS Config as a custom rule.
+# ======================================
 
+import json
+import boto3
+
+# Checks to see if the resource returned is applicable
 def is_applicable(config_item, event):
     status = config_item['configurationItemStatus']
     event_left_scope = event['eventLeftScope']
