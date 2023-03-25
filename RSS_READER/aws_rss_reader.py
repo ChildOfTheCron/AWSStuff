@@ -40,6 +40,7 @@ def build_html(data):
   <head>
     <meta charset="utf-8" />
     <title>What's Up Doc?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
 
   <body>
@@ -98,12 +99,12 @@ def build_html(data):
     document.write('<table class="styled-table", id="myTable2">');
     document.write('<tbody>');
     document.write("<tr>");
-    document.write('<th onclick="sortTable(0)"> Service </th>');
-    document.write('<th onclick="sortTable(1)"> Tag </th>');
-    document.write('<th onclick="sortTable(2)"> Date </th>');
-    document.write('<th onclick="sortTable(3)"> Time </th>');
-    document.write('<th onclick="sortTable(4)"> Summary </th>');
-    document.write('<th onclick="sortTable(5)"> Source </th>');
+    document.write('<th onclick="sortTable(0)"> Service <i class="fa fa-sort" style="font-size:12px"></i></th>');
+    document.write('<th onclick="sortTable(1)"> Tag <i class="fa fa-sort" style="font-size:12px"></i></th>');
+    document.write('<th onclick="sortTable(2)"> Date <i class="fa fa-sort" style="font-size:12px"></i></th>');
+    document.write('<th onclick="sortTable(3)"> Time <i class="fa fa-sort" style="font-size:12px"></i></th>');
+    document.write('<th onclick="sortTable(4)"> Summary <i class="fa fa-sort" style="font-size:12px"></i></th>');
+    document.write('<th onclick="sortTable(5)"> Source <i class="fa fa-sort" style="font-size:12px"></i></th>');
     document.write("</tr>");
 
     const myObj = JSON.parse(myJSON[0]);
