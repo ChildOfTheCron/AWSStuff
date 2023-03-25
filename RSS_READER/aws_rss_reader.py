@@ -3,6 +3,7 @@ import json
 import os
 from datetime import datetime
 from time import mktime
+import argparse
 
 # Security Bulletin RSS feed = https://aws.amazon.com/security/security-bulletins/feed/
 # What’s New RSS feed = https://aws.amazon.com/about-aws/whats-new/recent/feed/
@@ -28,7 +29,7 @@ def is_newer(date_one, date_two):
     dt_obj1 = datetime.strptime(date_one, "%d-%m-%Y")
     dt_obj2 = datetime.strptime(date_two, "%d-%m-%Y")
     if dt_obj2 > dt_obj1:
-        print(date_two + " is newer than " + date_one)
+        #print(date_two + " is newer than " + date_one)
         return True
     else:
         return False
@@ -186,7 +187,9 @@ def build_html(data):
     """
     return(html_top + html_json + html_bot)
 
-def update(url):
+# Todo - a lot of code duplication need to clean up
+# Todo - add try catches
+def update(url, fuzz):
     #Todo use get to get data not direct key access
     feed = feedparser.parse(url)
     for entry in feed.entries:
@@ -199,6 +202,48 @@ def update(url):
                         y["Time"] = normalize_time(entry.published_parsed)
                         y["Summary"] = entry.title
                         y["Link"] = entry.link
+                elif (int(fuzz) == 2) or (int(fuzz) == 3):
+                    if type(y["Tag"]) == list:
+                        for tag in y["Tag"]:
+                            if tag in entry.title:
+                                if is_newer(y.get("Date"), normalize_date(entry.published_parsed)):
+                                    y["Date"] = normalize_date(entry.published_parsed)
+                                    y["Time"] = normalize_time(entry.published_parsed)
+                                    y["Summary"] = entry.title
+                                    y["Link"] = entry.link
+                    else:
+                        if y["Tag"] in entry.title:
+                            if is_newer(y.get("Date"), normalize_date(entry.published_parsed)):
+                                y["Date"] = normalize_date(entry.published_parsed)
+                                y["Time"] = normalize_time(entry.published_parsed)
+                                y["Summary"] = entry.title
+                                y["Link"] = entry.link
+                else:
+                    continue
+
+                if int(fuzz) == 3:
+                    if name in entry.summary:
+                        if is_newer(y.get("Date"), normalize_date(entry.published_parsed)):
+                            y["Date"] = normalize_date(entry.published_parsed)
+                            y["Time"] = normalize_time(entry.published_parsed)
+                            y["Summary"] = entry.title
+                            y["Link"] = entry.link
+                        else:
+                            if type(y["Tag"]) == list:
+                                for tag in y["Tag"]:
+                                    if tag in entry.summary:
+                                        if is_newer(y.get("Date"), normalize_date(entry.published_parsed)):
+                                            y["Date"] = normalize_date(entry.published_parsed)
+                                            y["Time"] = normalize_time(entry.published_parsed)
+                                            y["Summary"] = entry.title
+                                            y["Link"] = entry.link
+                            else:
+                                if y["Tag"] in entry.summary:
+                                    if is_newer(y.get("Date"), normalize_date(entry.published_parsed)):
+                                        y["Date"] = normalize_date(entry.published_parsed)
+                                        y["Time"] = normalize_time(entry.published_parsed)
+                                        y["Summary"] = entry.title
+                                        y["Link"] = entry.link
 
 def write_output(services_list):
     if not os.path.exists('output'):
@@ -211,17 +256,28 @@ def write_output(services_list):
     with open('services.json', "w") as json_file:
         json.dump(services_list, json_file)
 
-def main():
+def main(fuzz):
 
     rss_urls = ["https://aws.amazon.com/blogs/aws/feed/","https://aws.amazon.com/security/security-bulletins/feed/","https://aws.amazon.com/about-aws/whats-new/recent/feed/"]
     for url in rss_urls:
-        update(url)
+        update(url, fuzz)
 
 if __name__ == "__main__":
 
+    argParser = argparse.ArgumentParser()
+    argParser.add_argument("-f", "--fuzz", help="Fuzziness level. Select 1, 2 or 3. Default is 1.")
+    argParser.add_argument("-n", "--nocache", action='store_true', help="Generate new json from template ignoring previous runs. All previous data will be lost!")
+    args = argParser.parse_args()
+    fuzziness = str(1) if args.fuzz is None else args.fuzz
+    no_cache_run = args.nocache
     services_list = []
-    with open('services.json', "r") as json_file:
-        services_list = json.load(json_file)
 
-    main()
+    if (no_cache_run) or not (os.path.isfile("services.json")):
+        with open('template.json', "r") as json_file:
+            services_list = json.load(json_file)
+    else:
+        with open('services.json', "r") as json_file:
+            services_list = json.load(json_file)
+
+    main(fuzziness)
     write_output(services_list)
