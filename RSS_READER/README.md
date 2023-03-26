@@ -1,7 +1,7 @@
 ## What's Up Doc?
 What's Up Doc is a command line tool that aggragates multiple different AWS RSS feeds into a single summary table. The table can be sorted between the different columbs.
 
-![HiMum](/images/whatsupDoc.jpg?raw=true "What's Up Doc")
+![HiMum](./images/whatsupDoc.jpg?raw=true)
 
 ## Purpose
 The generated table attempts to summarize the most up-to-date RSS releases for the specific service and lists them by date.
