@@ -19,7 +19,7 @@ options:
 Examples:
 
     python3 aws_rss_reader.py -n -f 1
-    python3 aws_rss_reader.py  -f 1
+    python3 aws_rss_reader.py -f 2
 Once a run is complete the generated html file can be found in ./output/
 
 ## Fuzziness Level
