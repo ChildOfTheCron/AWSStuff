@@ -246,6 +246,7 @@ def update(url, fuzz):
                                         y["Link"] = entry.link
 
 def write_output(services_list):
+
     if not os.path.exists('output'):
         os.makedirs('output')
 
@@ -258,18 +259,23 @@ def write_output(services_list):
 
 def main(fuzz):
 
-    rss_urls = ["https://aws.amazon.com/blogs/aws/feed/","https://aws.amazon.com/security/security-bulletins/feed/","https://aws.amazon.com/about-aws/whats-new/recent/feed/"]
-    for url in rss_urls:
-        update(url, fuzz)
+    if specific_url:
+        update(specific_url, fuzz)
+    else:
+        rss_urls = ["https://aws.amazon.com/blogs/aws/feed/","https://aws.amazon.com/security/security-bulletins/feed/","https://aws.amazon.com/about-aws/whats-new/recent/feed/"]
+        for url in rss_urls:
+            update(url, fuzz)
 
 if __name__ == "__main__":
 
     argParser = argparse.ArgumentParser()
     argParser.add_argument("-f", "--fuzz", help="Fuzziness level. Select 1, 2 or 3. Default is 1.")
     argParser.add_argument("-n", "--nocache", action='store_true', help="Generate new json from template ignoring previous runs. All previous data will be lost!")
+    argParser.add_argument("-u", "--url", help="Specify specific rss feed url to parse. Must belong to an AWS RSS feed.")
     args = argParser.parse_args()
     fuzziness = str(1) if args.fuzz is None else args.fuzz
     no_cache_run = args.nocache
+    specific_url = args.url
     services_list = []
 
     if (no_cache_run) or not (os.path.isfile("services.json")):
