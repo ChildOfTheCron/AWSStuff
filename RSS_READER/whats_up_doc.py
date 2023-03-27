@@ -1,9 +1,9 @@
 import feedparser
 import json
 import os
+import argparse
 from datetime import datetime
 from time import mktime
-import argparse
 
 # Security Bulletin RSS feed = https://aws.amazon.com/security/security-bulletins/feed/
 # What’s New RSS feed = https://aws.amazon.com/about-aws/whats-new/recent/feed/

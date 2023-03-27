@@ -35,3 +35,7 @@ You can set 3 different fuzziness levels (-f 1/2/3)
 
 Note: The higher the level the less accurate results may be. Keep this in mind when setting.
 
+## Installation
+Not much is needed to run the app. Just install the requirements.txt file:
+    pip install -r requirements.txt
+
