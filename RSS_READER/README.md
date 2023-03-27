@@ -20,14 +20,17 @@ options:
 Examples:
 
     python3 aws_rss_reader.py -n -f 1
-    python3 aws_rss_reader.py -f 1
+    python3 aws_rss_reader.py -f 2
     python3 whats_up_doc.py -n -f 1 -u 'https://aws.amazon.com/security/security-bulletins/feed/'
 Once a run is complete the generated html file can be found in ./output/
 
 ## Fuzziness Level
 You can set 3 different fuzziness levels (-f 1/2/3)
+
 **Level 1** - This level will check to see if the service is mentioned in any of the RSS feed titles. If it is, it'll be updated in the table.
+
 **Level 2** - Similar to one, it'll check for both service name and also any tags. If either of these are found in the title of the RSS feed then it'll match.
+
 **Level 3** - Similar to levels 1 and 2 but includes both the RSS feeds title and summary section of the article.
 
 Note: The higher the level the less accurate results may be. Keep this in mind when setting.
