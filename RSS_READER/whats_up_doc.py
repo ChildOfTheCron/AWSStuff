@@ -4,6 +4,7 @@ import os
 import argparse
 from datetime import datetime
 from time import mktime
+from prettytable.colortable import ColorTable, Themes
 
 # Security Bulletin RSS feed = https://aws.amazon.com/security/security-bulletins/feed/
 # What’s New RSS feed = https://aws.amazon.com/about-aws/whats-new/recent/feed/
@@ -207,6 +208,24 @@ def build_html(data):
     """
     return(html_top + html_json + html_bot)
 
+def print_table(data):
+    table = [['Service', 'Date', 'Summary']]
+    table_source = data
+    #tab = PrettyTable(table[0])
+    tab = ColorTable(table[0], theme=Themes.OCEAN)
+    tab.add_rows(table[1:])
+    for element in table_source:
+        for item in table_source[element]:
+            if len(item["Name"]) > 17:
+               item["Name"] = item["Name"].replace("Amazon","")
+               item["Name"] = item["Name"].replace("AWS","")
+               item["Name"] = item["Name"].replace(" ","") if len(item["Name"]) > 17 else item["Name"]
+            #print(item["Name"], item["Tag"], item["Date"], item["Time"], item["Summary"], item["Link"])
+            if "NO DATA" not in item["Summary"]:
+                meh = [[item["Name"], item["Date"], item["Summary"]]]
+                tab.add_rows(meh)
+    print(tab)
+
 # Todo - a lot of code duplication need to clean up
 # Todo - add try catches
 def update(url, fuzz):
@@ -292,6 +311,7 @@ if __name__ == "__main__":
     argParser.add_argument("-f", "--fuzz", help="Fuzziness level. Select 1, 2 or 3. Default is 1.")
     argParser.add_argument("-n", "--nocache", action='store_true', help="Generate new json from template ignoring previous runs. All previous data will be lost!")
     argParser.add_argument("-u", "--url", help="Specify specific rss feed url to parse. Must belong to an AWS RSS feed.")
+    argParser.add_argument("-t", "--table", action='store_true', help="Print summary table to terminal.")
     args = argParser.parse_args()
     fuzziness = str(1) if args.fuzz is None else args.fuzz
     no_cache_run = args.nocache
@@ -307,3 +327,6 @@ if __name__ == "__main__":
 
     main(fuzziness)
     write_output(services_list)
+
+    if args.table:
+        print_table(services_list)
