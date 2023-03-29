@@ -9,13 +9,15 @@ The generated table attempts to summarise the most up-to-date RSS releases for t
 I made this tool to assist me in staying up to date with the latest changes to the various AWS services. As there are so many, it is difficult to keep up with them all. This tool *should* cover all different AWS services, I compiled a list using their service catalogue but I did find a service that was unlisted. I'm happy to accept any PRs or issues logged for missing services.
 
 ## Usage
-usage: whats_up_doc.py [-h] [-f FUZZ] [-n] [-u URL]
+    usage: whats_up_doc.py [-h] [-f FUZZ] [-n] [-u URL]
 
-options:
-  -h, --help            show this help message and exit
-  -f FUZZ, --fuzz FUZZ  Fuzziness level. Select 1, 2 or 3. Default is 1.
-  -n, --nocache         Generate new json from template ignoring previous runs. All previous data will be lost!
-  -u URL, --url URL     Specify specific rss feed url to parse. Must belong to an AWS RSS feed.
+    options:
+
+      -h, --help            show this help message and exit
+      -f FUZZ, --fuzz FUZZ  Fuzziness level. Select 1, 2 or 3. Default is 1.
+      -n, --nocache         Generate new json from template ignoring previous runs. All previous data will be lost!
+      -u URL, --url URL     Specify specific rss feed url to parse. Must belong to an AWS RSS feed.
+  
 
 Examples:
 
