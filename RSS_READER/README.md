@@ -19,8 +19,8 @@ options:
 
 Examples:
 
-    python3 aws_rss_reader.py -n -f 1
-    python3 aws_rss_reader.py -f 2
+    python3 whats_up_doc.py -n -f 1
+    python3 whats_up_doc.py -f 2
     python3 whats_up_doc.py -n -f 1 -u 'https://aws.amazon.com/security/security-bulletins/feed/'
 Once a run is complete the generated html file can be found in ./output/
 
