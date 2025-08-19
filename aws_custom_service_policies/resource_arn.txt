@@ -1,0 +1,1 @@
+arn:aws:iam::12345678901:role/service-role/CloudWatchSyntheticsRole-testcanary-651-5378cxb45832
